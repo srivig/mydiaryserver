@@ -7,8 +7,6 @@ module.exports = function(server, db) {
   //   unique: true
   // });
 
-  db.appUsers.insert( { name: "vignesh", email: "buhahha@gmail.com", password:"moew"} )
-
   server.post('/api/v1/mydiaryapp/auth/register', function(req, res, next) {
     var user = req.params;
     console.log(user.name);
