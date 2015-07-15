@@ -1,0 +1,17 @@
+{
+  "name": "MyDiary_webservice",
+  "version": "1.0.0",
+  "description": "Webservices for MyDiary app",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Srivigneshwar R Prasad",
+  "license": "ISC",
+  "dependencies": {
+    "bcrypt": "^0.8.3",
+    "mongojs": "^1.0.0",
+    "morgan": "^1.6.0",
+    "restify": "^3.0.3"
+  }
+}
