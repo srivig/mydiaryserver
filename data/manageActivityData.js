@@ -15,6 +15,20 @@ module.exports = function(server, db) {
     });
     return next();
   });
+  server.get("/api/v1/mydiaryapp/activityData/data/list/all", function(req, res, next) {
+    validateRequest.validate(req, res, db, function() {
+      db.activityData.find({
+        user: req.params.token,
+        startDate: req.params.startDate
+      }, function(err, list) {
+        res.writeHead(200, {
+          'Content-Type': 'application/json; charset=utf-8'
+        });
+        res.end(JSON.stringify(list));
+      });
+    });
+    return next();
+  });
   server.get("/api/v1/mydiaryapp/activityData/data/datesWithData", function(req, res, next) {
     validateRequest.validate(req, res, db, function() {
       db.activityData.distinct("startDate",{
