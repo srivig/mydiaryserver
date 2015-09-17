@@ -42,7 +42,7 @@ module.exports = function(server, db) {
     });
     return next();
   });
-  server.get('/api/v1/mydiaryapp/activityData/data/item/:id', function(req, res, next) {
+  server.get('/api/v1/mydiaryapp/activityData/existing/:id', function(req, res, next) {
     validateRequest.validate(req, res, db, function() {
       db.activityData.find({
         _id: db.ObjectId(req.params.id)
@@ -73,6 +73,7 @@ module.exports = function(server, db) {
   });
   server.put('/api/v1/mydiaryapp/activityData/data/item/:id', function(req, res, next) {
     validateRequest.validate(req, res, db, function() {
+      console.log(req.params.id);
       db.activityData.findOne({
         _id: db.ObjectId(req.params.id)
       }, function(err, data) {
@@ -83,9 +84,10 @@ module.exports = function(server, db) {
           updProd[n] = data[n];
         }
         for (var n in req.params) {
-          if (n != "id")
+          if (n != "_id")
             updProd[n] = req.params[n];
         }
+        console.log(updProd);
         db.activityData.update({
           _id: db.ObjectId(req.params.id)
         }, updProd, {
