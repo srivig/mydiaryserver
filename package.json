@@ -4,7 +4,7 @@
   "description": "Webservices for MyDiary app",
   "main": "index.js",
   "engines": {
-    "node": "4.1.1"
+    "node": "0.10.33"
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
