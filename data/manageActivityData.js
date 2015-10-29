@@ -29,6 +29,65 @@ module.exports = function(server, db) {
     });
     return next();
   });
+
+  server.get("/api/v1/mydiaryapp/activityData/data/list/allValues", function(req, res, next) {
+    // var allDateListObj = JSON.parse(req.params.allDateList);
+    var allDateListObj = req.params.allDateList.split(",");
+
+    validateRequest.validate(req, res, db, function() {
+      db.activityData.aggregate(
+
+        // Pipeline
+        [
+          // Stage 1
+          {
+            $match: {
+            user: req.params.token
+            }
+          },
+
+          // Stage 2
+          {
+            $match: {
+            "startDate": {
+                		$in: allDateListObj
+              }
+            }
+          },
+
+          // Stage 3
+          {
+            $group: {
+              _id : "$startDate", items:{$push : "$$ROOT"}
+            }
+
+          },
+          // Stage 4
+          {
+            $sort: {
+            _id: 1
+            }
+          }
+
+        ], function(err, list) {
+          res.writeHead(200, {
+            'Content-Type': 'application/json; charset=utf-8'
+          });
+          res.end(JSON.stringify(list));
+        });
+      // db.activityData.find({
+      //   user: req.params.token,
+      //   startDate: req.params.startDate
+      // }, function(err, list) {
+      //   res.writeHead(200, {
+      //     'Content-Type': 'application/json; charset=utf-8'
+      //   });
+      //   res.end(JSON.stringify(list));
+      // });
+    });
+    return next();
+  });
+
   server.get("/api/v1/mydiaryapp/activityData/data/datesWithData", function(req, res, next) {
     validateRequest.validate(req, res, db, function() {
       db.activityData.distinct("startDate",{
@@ -58,8 +117,6 @@ module.exports = function(server, db) {
   server.post('/api/v1/mydiaryapp/activityData/data/item', function(req, res, next) {
     validateRequest.validate(req, res, db, function() {
       var item = req.params;
-      console.log(item);
-      console.log(db.activityData);
 
       db.activityData.save(item,
         function(err, data) {
@@ -73,7 +130,6 @@ module.exports = function(server, db) {
   });
   server.put('/api/v1/mydiaryapp/activityData/data/item/:id', function(req, res, next) {
     validateRequest.validate(req, res, db, function() {
-      console.log(req.params.id);
       db.activityData.findOne({
         _id: db.ObjectId(req.params.id)
       }, function(err, data) {
@@ -87,7 +143,6 @@ module.exports = function(server, db) {
           if (n != "_id")
             updProd[n] = req.params[n];
         }
-        console.log(updProd);
         db.activityData.update({
           _id: db.ObjectId(req.params.id)
         }, updProd, {
