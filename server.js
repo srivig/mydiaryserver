@@ -1,7 +1,7 @@
 var restify     =   require('restify');
 var mongojs     =   require('mongojs');
 var morgan  	  =   require('morgan');
-var dbServer    =   'mongodb://srivi:angryrhino@ds047968.mongolab.com:47968/mydiary_alpha';
+var dbServer    =   'mongodb://xxx:xxx@xxx.xxx.xxx:xxx/xxx';
 var dbServerLocal = 'mydiaryapp';
 var db          =   mongojs(dbServer, ['appUsers','activityData'], {authMechanism: 'ScramSHA1'});
 var server      =   restify.createServer();
